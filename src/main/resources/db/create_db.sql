@@ -1,5 +1,5 @@
-CREATE USER admin WITH PASSWORD 'admin';
+CREATE USER riberry WITH PASSWORD 'admin';
 
-DROP DATABASE IF EXISTS family_database;
-CREATE DATABASE family_database;
-GRANT ALL PRIVILEGES ON DATABASE family_database TO admin;
+DROP DATABASE IF EXISTS family_tree;
+CREATE DATABASE family_tree;
+GRANT ALL PRIVILEGES ON DATABASE family_tree TO riberry;

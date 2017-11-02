@@ -10,7 +10,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("/api/application")
+@RequestMapping("/api/family_member")
 public class FamilyMemberController {
 
     private FamilyMemberService service;

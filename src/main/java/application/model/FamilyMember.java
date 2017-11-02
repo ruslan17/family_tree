@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "application")
+@Entity(name = "family_member")
 public class FamilyMember {
 
     @Id
