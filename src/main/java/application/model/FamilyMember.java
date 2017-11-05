@@ -5,20 +5,49 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "family_member")
+/**
+ * Сущность для члена семьи
+ */
+@Entity
 public class FamilyMember {
 
+    /**
+     * Уникальный идентификатор
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    /**
+     * Имя
+     */
     private String name;
 
+    /**
+     * Фамилия
+     */
+    private String surname;
+
+    /**
+     * Возраст
+     */
     private Integer age;
 
-    private String motherId;
+    /**
+     * Пол
+     * true - мужской, false - женский.
+     */
+    private boolean sex;
 
-    private String fatherId;
+    /**
+     * Мать
+     */
+    private String mother;
+
+    /**
+     * Отец
+     */
+    private String father;
 
     public Integer getId() {
         return id;
@@ -44,19 +73,35 @@ public class FamilyMember {
         this.age = age;
     }
 
-    public String getMotherId() {
-        return motherId;
+    public boolean isSex() {
+        return sex;
     }
 
-    public void setMotherId(String motherId) {
-        this.motherId = motherId;
+    public void setSex(boolean sex) {
+        this.sex = sex;
     }
 
-    public String getFatherId() {
-        return fatherId;
+    public String getMother() {
+        return mother;
     }
 
-    public void setFatherId(String fatherId) {
-        this.fatherId = fatherId;
+    public void setMother(String mother) {
+        this.mother = mother;
+    }
+
+    public String getFather() {
+        return father;
+    }
+
+    public void setFather(String father) {
+        this.father = father;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 }

@@ -6,7 +6,8 @@ import Root from './Root';
 import routes from './Routes';
 
 import config from 'react-global-configuration';
-config.set({ BASE_URL: 'http://localhost:7171/api/'});
+// Базовый URL
+config.set({ BASE_URL: 'http://localhost:7171/api/family_member/'});
 
 Root.assetBaseUrl = window.ASSET_BASE_URL;
 Root.propData = window.PROP_DATA;

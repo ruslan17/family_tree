@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Реализация сервиса
+ */
 @Service
 public class FamilyMemberServiceImpl implements FamilyMemberService {
 
@@ -23,6 +26,11 @@ public class FamilyMemberServiceImpl implements FamilyMemberService {
     @Override
     public FamilyMember create(FamilyMember member) {
         return familyMemberDAO.save(member);
+    }
+
+    @Override
+    public FamilyMember findOne(Integer id) {
+        return familyMemberDAO.findOne(id);
     }
 
     @Override

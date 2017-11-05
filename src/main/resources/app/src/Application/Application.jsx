@@ -5,10 +5,11 @@ import config from 'react-global-configuration';
 import {Button, Icon} from 'react-materialize';
 import {Link} from 'react-router';
 
+// Компонент для отображения всех членов семьи
 let Application = React.createClass( {
     loadFromServer: function () {
         $.ajax({
-            url: config.get('BASE_URL') + `family_member?size=10000`,
+            url: config.get('BASE_URL') + `?size=10000`,
             dataType: 'json',
             success: function(member) {
                 this.setState({family_member: member});
@@ -25,24 +26,6 @@ let Application = React.createClass( {
     },
     componentDidMount: function() {
         this.loadFromServer(this.props);
-        this.deleteMember(this.props);
-    },
-    createMember: function() {
-        console.log("save")
-    },
-    deleteMember: function () {
-        $.ajax({
-            url: config.get('BASE_URL') + `family_member`,
-            type: "DELETE",
-            dataType: 'json',
-            contentType: 'application/json',
-            success: function (member) {
-                console.log("delete")
-            }.bind(this),
-            error: function () {
-                console.error("Error");
-            }
-        });
     },
     render() {
         var self = this;
@@ -52,21 +35,23 @@ let Application = React.createClass( {
                         <tbody>
                             <tr>
                                 <th>Name</th>
+                                <th>Surname</th>
                                 <th>Age</th>
+                                <th>Sex</th>
                                 <th>Mother</th>
                                 <th>Father</th>
                                 <th>Edit</th>
-                                <th>Delete</th>
                             </tr>
                             {self.state.family_member.map(function (person) {
                                 return (
                                     <FamilyTree key={person.id}
                                                 id={person.id}
                                                 name={person.name}
+                                                surname={person.surname}
                                                 age={person.age}
-                                                mother={person.motherId}
-                                                father={person.fatherId}
-                                                deleteMember={self.deleteMember}
+                                                sex={person.sex === true ? <p>Man</p> : <p>Woman</p>}
+                                                mother={person.mother}
+                                                father={person.father}
                                     />
                                 )
                             })}
@@ -74,7 +59,7 @@ let Application = React.createClass( {
                     </table>
                     <div className="create_button">
                         <Link to={`/create`}>
-                            <Button onClick={this.createMember} waves='light' style={{backgroundColor: "green"}}>CREATE<Icon left>input</Icon></Button>
+                            <Button waves='light' style={{backgroundColor: "green"}}>CREATE<Icon left>input</Icon></Button>
                         </Link>
                     </div>
                 </div>
@@ -86,11 +71,16 @@ function FamilyTree(props) {
     return (
                     <tr>
                         <td>{props.name}</td>
+                        <td>{props.surname}</td>
                         <td>{props.age}</td>
+                        <td>{props.sex}</td>
                         <td>{props.mother}</td>
                         <td>{props.father}</td>
-                        <td><Button waves='light' style={{backgroundColor: "blue"}}>EDIT<Icon left>edit</Icon></Button></td>
-                        <td><Button waves='light' onClick={props.deleteMember} style={{backgroundColor: "red"}}>DELETE<Icon left>delete</Icon></Button></td>
+                        <td>
+                            <Link to={`/edit/${props.id}`}>
+                                <Button waves='light' style={{backgroundColor: "blue"}}>EDIT<Icon left>edit</Icon></Button>
+                            </Link>
+                        </td>
                     </tr>
     )
 }

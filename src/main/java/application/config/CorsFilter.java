@@ -7,6 +7,10 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Т к фронт запускается на другом хосте CORS нужен потому что в целях безопасности,
+ * браузеры не разрешают делать  XMLHttpRequest запросы типа Ajax между разными доменами
+ */
 @Component
 public class CorsFilter implements Filter {
 

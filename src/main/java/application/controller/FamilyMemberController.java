@@ -3,14 +3,17 @@ package application.controller;
 import application.model.FamilyMember;
 import application.service.FamilyMemberService;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@Controller
-@RequestMapping("/api/family_member")
+/**
+ * Контроллер
+ * @RestController используется вместо обычного @Controller, т к тогда @ResponseBody применяется ко всем методам автоматически
+ */
+@RestController
+@RequestMapping("api/family_member")
 public class FamilyMemberController {
 
     private FamilyMemberService service;
@@ -19,29 +22,36 @@ public class FamilyMemberController {
         this.service = service;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public List<FamilyMember> findAll() {
         return service.findAll();
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
-    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public FamilyMember find(@PathVariable Integer id) {
+
+        return service.findOne(id);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseStatus(HttpStatus.OK)
     FamilyMember create(@RequestBody @Valid FamilyMember member) {
         return service.create(member);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    @ResponseBody
+    @RequestMapping(value ="edit", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
     FamilyMember update(@RequestBody @Valid FamilyMember member) {
         return service.update(member);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.OK)
-    void delete(@PathVariable("id") Integer id) {
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE, produces = "application/json;charset=UTF-8")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void delete(@PathVariable int id) {
         service.delete(id);
+    }
+
+    public void setService(FamilyMemberService service) {
+        this.service = service;
     }
 
 }

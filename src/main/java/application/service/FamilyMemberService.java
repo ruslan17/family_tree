@@ -4,9 +4,14 @@ import application.model.FamilyMember;
 
 import java.util.List;
 
+/**
+ * Сервис
+ */
 public interface FamilyMemberService {
 
     List<FamilyMember> findAll();
+
+    FamilyMember findOne(Integer id);
 
     FamilyMember create(FamilyMember member);
 
