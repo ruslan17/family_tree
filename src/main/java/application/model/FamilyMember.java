@@ -65,6 +65,14 @@ public class FamilyMember {
         this.name = name;
     }
 
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
     public Integer getAge() {
         return age;
     }
@@ -73,11 +81,11 @@ public class FamilyMember {
         this.age = age;
     }
 
-    public boolean isSex() {
+    public boolean isGender() {
         return gender;
     }
 
-    public void setSex(boolean gender) {
+    public void setGender(boolean gender) {
         this.gender = gender;
     }
 
@@ -95,13 +103,5 @@ public class FamilyMember {
 
     public void setFather(String father) {
         this.father = father;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
     }
 }
