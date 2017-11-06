@@ -3,7 +3,7 @@ import React from 'react';
 import $ from 'jquery';
 import config from 'react-global-configuration';
 import {Button, Icon} from 'react-materialize';
-import {Link} from 'react-router';
+import {Link, replace, browserHistory} from 'react-router';
 import update from 'react-addons-update';
 
 // Компонент для редактирования и удаления члена семьи
@@ -57,7 +57,10 @@ let Edit = React.createClass( {
                 type: "DELETE",
                 success: function (data) {
                     this.setState({ data: 0 });
+                    this.props.history.push('/');
+
                 }.bind(this),
+
                 error: function () {
                     console.error("Error");
                 }

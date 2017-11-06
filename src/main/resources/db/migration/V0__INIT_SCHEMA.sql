@@ -6,8 +6,8 @@ CREATE TABLE family_member (
   surname             VARCHAR(255),
   age                 INT NOT NULL,
   sex                 BOOLEAN,
-  mother              INT REFERENCES family_member (id) ON DELETE CASCADE,
-  father              INT REFERENCES family_member (id) ON DELETE CASCADE
+  mother              TEXT,
+  father              TEXT
 );
 
 COMMENT ON TABLE family_member IS 'Таблица членов семьи';
