@@ -52,6 +52,7 @@ let Create = React.createClass( {
             }.bind(this),
             error: function () {
                 console.error("Error");
+                alert("Wrong arguments");
             }
         });
     },
@@ -133,7 +134,7 @@ let Create = React.createClass( {
                                    value={this.state.surname}
                                    onChange={this.surnameHandler}/></td>
                         <td><input type="text"
-                                   placeholder="Age"
+                                   placeholder="Age (0 - 150)"
                                    value={this.state.age}
                                    onChange={this.ageHandler}/></td>
                         <td>

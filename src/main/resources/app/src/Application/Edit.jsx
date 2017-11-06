@@ -59,7 +59,7 @@ let Edit = React.createClass( {
             url: config.get('BASE_URL') + `${props.params.id}`,
             dataType: 'json',
             success: function(member) {
-                this.setState({family_member: member._embedded.family_member});
+                this.setState({family_member: member});
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(status, err.toString());
@@ -176,7 +176,7 @@ let Edit = React.createClass( {
                     <td>
                         <Select
                             name="selected-state"
-                            placeholder={gender}
+                            placeholder="Gender"
                             options={selectGender}
                             value={this.state.gender}
                             onChange={this.sexHandler}

@@ -73,14 +73,6 @@ public class FamilyMember {
         this.age = age;
     }
 
-    public boolean isSex() {
-        return gender;
-    }
-
-    public void setSex(boolean gender) {
-        this.gender = gender;
-    }
-
     public String getMother() {
         return mother;
     }
@@ -103,5 +95,13 @@ public class FamilyMember {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public boolean isGender() {
+        return gender;
+    }
+
+    public void setGender(boolean gender) {
+        this.gender = gender;
     }
 }
