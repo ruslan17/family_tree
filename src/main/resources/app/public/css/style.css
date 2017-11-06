@@ -19,18 +19,27 @@ th {
     color: white;
 }
 
-#create {
+.create {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
 
-#create td, #create th {
+.create td, .create th {
     border: 1px solid #ddd;
     padding: 8px;
 }
 
-.create_button {
+.custom_button {
     text-align: center;
     padding-top: 50px;
+}
+
+input[type=text] {
+    border-bottom: none !important;
+    margin: 0 0 0 0 !important;
+}
+
+.Select-control {
+    border-radius: 0px !important;
 }

@@ -5,9 +5,7 @@ import config from 'react-global-configuration';
 import {Button, Icon} from 'react-materialize';
 import {Link} from 'react-router';
 import update from 'react-addons-update';
-
 import Select from 'react-select';
-
 import 'react-select/dist/react-select.css';
 
 // Компонент для создания члена семьи
@@ -31,12 +29,12 @@ let Create = React.createClass( {
             dataType: 'json',
             contentType: 'application/json',
             data: JSON.stringify({
-                id: this.state.id,
                 name: this.state.name,
                 surname: this.state.surname,
                 age: this.state.age,
-                sex: this.state.sex,
-                mother: this.state.mother
+                gender: this.state.gender.value,
+                mother: this.state.mother.value,
+                father: this.state.father.value
             }),
             success: function () {
                 const state = update(this.state,
@@ -44,11 +42,13 @@ let Create = React.createClass( {
                         name: '',
                         surname: '',
                         age: '',
-                        sex: '',
-                        mother: ''
+                        gender: '',
+                        mother: '',
+                        father: ''
                     }}
                 );
                 this.setState(state);
+                this.props.history.push('/');
             }.bind(this),
             error: function () {
                 console.error("Error");
@@ -61,8 +61,9 @@ let Create = React.createClass( {
             name: '',
             surname: '',
             age: '',
-            sex: '',
-            mother: ''
+            gender: '',
+            mother: '',
+            father: ''
         };
     },
     componentDidMount: function() {
@@ -86,83 +87,112 @@ let Create = React.createClass( {
         );
         this.setState(state);
     },
-    sexHandler: function(e) {
-        const state = update(this.state,
-            {$merge: {sex: e.target.value}}
-        );
-        this.setState(state);
-    },
-    motherHandler: function(e) {
-        const state = update(this.state,
-            {$merge: {mother: e.target.value}}
-        );
-        this.setState(state);
-    },
-    updateValue (newValue) {
+    genderHandler (newValue) {
         this.setState({
-            selectValue: newValue,
+            gender: newValue,
+        });
+    },
+    motherHandler (newValue) {
+        this.setState({
+            mother: newValue,
+        });
+    },
+    fatherHandler (newValue) {
+        this.setState({
+            father: newValue,
         });
     },
     render() {
-        var options = [];
-
-        var self = this;
+        let self = this;
+        let motherMap = [];
+        let fatherMap = [];
+        let selectGender = [
+            { value: true, label: 'Man' },
+            { value: false, label: 'Woman' }
+        ];
 
         return (
             <div>
-                <table id="create">
+                <table className="create">
                     <tbody>
-                        <tr>
-                            <th>Name</th>
-                            <th>Surname</th>
-                            <th>Age</th>
-                            <th>Sex</th>
-                            <th>Mother</th>
-                            <th>Father</th>
-                        </tr>
-                        <tr>
-                            <td><input type="text"
-                                       placeholder="Name"
-                                       value={this.state.name}
-                                       onChange={this.nameHandler}/></td>
-                            <td><input type="text"
-                                       placeholder="Surname"
-                                       value={this.state.surname}
-                                       onChange={this.surnameHandler}/></td>
-                            <td><input type="text"
-                                       placeholder="Age"
-                                       value={this.state.age}
-                                       onChange={this.ageHandler}/></td>
-
-                            <td>
-                                {self.state.family_member.map(function (content) {
-                                    content.label = content.mother;
-                                    content.value = content.mother;
-                                    options.push(content);
-                                })}
-                                <Select
-                                    name="selected-state"
-                                    options={options}
-                                    value={this.state.selectValue}
-                                    onChange={this.updateValue}
-                                    // value={this.state.mother}
-                                    // onChange={this.motherHandler}
-                                />
-                            </td>
-                            <td><input type="text" placeholder="Father"/></td>
-                        </tr>
+                    <tr>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Mother</th>
+                        <th>Father</th>
+                    </tr>
+                    <tr>
+                        <td><input type="text"
+                                   placeholder="Name"
+                                   value={this.state.name}
+                                   onChange={this.nameHandler}/></td>
+                        <td><input type="text"
+                                   placeholder="Surname"
+                                   value={this.state.surname}
+                                   onChange={this.surnameHandler}/></td>
+                        <td><input type="text"
+                                   placeholder="Age"
+                                   value={this.state.age}
+                                   onChange={this.ageHandler}/></td>
+                        <td>
+                            <Select
+                                name="selected-state"
+                                placeholder="Gender"
+                                options={selectGender}
+                                value={this.state.gender}
+                                onChange={this.genderHandler}
+                            />
+                        </td>
+                        <td>
+                            {self.state.family_member.map(function (m) {
+                                if (m.gender === false) {
+                                    motherMap.push({
+                                        label: m.name,
+                                        value: m.name
+                                    });
+                                }
+                            })}
+                            <Select
+                                name="selected-state"
+                                placeholder="Mother"
+                                options={motherMap}
+                                value={this.state.mother}
+                                onChange={this.motherHandler}
+                            />
+                        </td>
+                        <td>
+                            {self.state.family_member.map(function (f) {
+                                if (f.gender === true) {
+                                    fatherMap.push({
+                                        label: f.name,
+                                        value: f.name
+                                    });
+                                }
+                            })}
+                            <Select
+                                name="selected-state"
+                                placeholder="Father"
+                                options={fatherMap}
+                                value={this.state.father}
+                                onChange={this.fatherHandler}
+                            />
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
-                <div className="create_button">
-                        <Button onClick={this.send} waves='light' style={{backgroundColor: "green"}}>CREATE<Icon left>input</Icon></Button>
+                <div className="custom_button">
+                    <Button onClick={this.send} waves='light' style={{backgroundColor: "green"}}>CREATE<Icon left>input</Icon></Button>
+                </div>
+                <div className="custom_button">
+                    <Link to={`/`}>
+                        <Button waves='light' style={{backgroundColor: "blue"}}>BACK<Icon left>arrow_back</Icon></Button>
+                    </Link>
                 </div>
             </div>
         );
     }
 });
-
-function logChange(val) {
-    console.log('Selected: ', val);
-}
 
 export default Create;

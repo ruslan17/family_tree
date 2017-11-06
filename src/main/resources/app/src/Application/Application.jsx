@@ -29,59 +29,59 @@ let Application = React.createClass( {
     },
     render() {
         var self = this;
-            return (
-                <div>
-                    <table id="persons">
-                        <tbody>
-                            <tr>
-                                <th>Name</th>
-                                <th>Surname</th>
-                                <th>Age</th>
-                                <th>Sex</th>
-                                <th>Mother</th>
-                                <th>Father</th>
-                                <th>Edit</th>
-                            </tr>
-                            {self.state.family_member.map(function (person, index) {
-                                return (
-                                    <FamilyTree key={index}
-                                                id={person.id}
-                                                name={person.name}
-                                                surname={person.surname}
-                                                age={person.age}
-                                                sex={person.sex === true ? <p>Man</p> : <p>Woman</p>}
-                                                mother={person.mother}
-                                                father={person.father}
-                                    />
-                                )
-                            })}
-                        </tbody>
-                    </table>
-                    <div className="create_button">
-                        <Link to={`/create`}>
-                            <Button waves='light' style={{backgroundColor: "green"}}>CREATE<Icon left>input</Icon></Button>
-                        </Link>
-                    </div>
+        return (
+            <div>
+                <table id="persons">
+                    <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Mother</th>
+                        <th>Father</th>
+                        <th>Edit</th>
+                    </tr>
+                    {self.state.family_member.map(function (person) {
+                        return (
+                            <FamilyTree key={person.id}
+                                        id={person.id}
+                                        name={person.name}
+                                        surname={person.surname}
+                                        age={person.age}
+                                        gender={person.gender === true ? <p>Man</p> : <p>Woman</p>}
+                                        mother={person.mother}
+                                        father={person.father}
+                            />
+                        )
+                    })}
+                    </tbody>
+                </table>
+                <div className="custom_button">
+                    <Link to={`/create`}>
+                        <Button waves='light' style={{backgroundColor: "green"}}>CREATE<Icon left>input</Icon></Button>
+                    </Link>
                 </div>
-            );
+            </div>
+        );
     }
 });
 
 function FamilyTree(props) {
     return (
-                    <tr>
-                        <td>{props.name}</td>
-                        <td>{props.surname}</td>
-                        <td>{props.age}</td>
-                        <td>{props.sex}</td>
-                        <td>{props.mother}</td>
-                        <td>{props.father}</td>
-                        <td>
-                            <Link to={`/edit/${props.id}`}>
-                                <Button waves='light' style={{backgroundColor: "blue"}}>EDIT<Icon left>edit</Icon></Button>
-                            </Link>
-                        </td>
-                    </tr>
+        <tr>
+            <td>{props.name}</td>
+            <td>{props.surname}</td>
+            <td>{props.age}</td>
+            <td>{props.gender}</td>
+            <td>{props.mother}</td>
+            <td>{props.father}</td>
+            <td>
+                <Link to={`/edit/${props.id}`}>
+                    <Button waves='light' style={{backgroundColor: "blue"}}>EDIT<Icon left>edit</Icon></Button>
+                </Link>
+            </td>
+        </tr>
     )
 }
 

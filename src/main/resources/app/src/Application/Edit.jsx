@@ -3,8 +3,9 @@ import React from 'react';
 import $ from 'jquery';
 import config from 'react-global-configuration';
 import {Button, Icon} from 'react-materialize';
-import {Link} from 'react-router';
+import {Link, replace, browserHistory} from 'react-router';
 import update from 'react-addons-update';
+import Select from 'react-select';
 
 // Компонент для редактирования и удаления члена семьи
 let Edit = React.createClass( {
@@ -27,7 +28,10 @@ let Edit = React.createClass( {
                         {$merge: {
                             name: '',
                             surname: '',
-                            age: ''
+                            age: '',
+                            gender: '',
+                            mother: '',
+                            father: ''
                         }}
                     );
                     this.setState(state);
@@ -38,12 +42,24 @@ let Edit = React.createClass( {
             });
         }
     },
+    loadAllFromServer: function () {
+        $.ajax({
+            url: config.get('BASE_URL') + `?size=10000`,
+            dataType: 'json',
+            success: function(member) {
+                this.setState({family_map: member});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(status, err.toString());
+            }
+        });
+    },
     loadFromServer: function (props) {
         $.ajax({
             url: config.get('BASE_URL') + `${props.params.id}`,
             dataType: 'json',
             success: function(member) {
-                this.setState({family_member: member});
+                this.setState({family_member: member._embedded.family_member});
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(status, err.toString());
@@ -55,8 +71,9 @@ let Edit = React.createClass( {
             $.ajax({
                 url: config.get('BASE_URL') + `${this.props.params.id}`,
                 type: "DELETE",
-                success: function (data) {
+                success: function () {
                     this.setState({ data: 0 });
+                    this.props.history.push('/');
                 }.bind(this),
                 error: function () {
                     console.error("Error");
@@ -71,13 +88,18 @@ let Edit = React.createClass( {
     },
     componentDidMount: function() {
         this.loadFromServer(this.props);
+        this.loadAllFromServer();
     },
     getInitialState: function() {
         return {
             family_member: [],
+            family_map: [],
             name: '',
             surname: '',
             age: '',
+            gender: '',
+            mother: '',
+            father: '',
             id: this.props.params.id
         };
     },
@@ -99,44 +121,107 @@ let Edit = React.createClass( {
         );
         this.setState(state);
     },
+    sexHandler (newValue) {
+        this.setState({
+            gender: newValue,
+        });
+    },
+    motherHandler (newValue) {
+        this.setState({
+            mother: newValue,
+        });
+    },
+    fatherHandler (newValue) {
+        this.setState({
+            father: newValue,
+        });
+    },
     render() {
         var self = this;
         var name = self.state.family_member.name;
-        var age =self.state.family_member.age;
+        var surname = self.state.family_member.surname;
+        var age = self.state.family_member.age;
+        var gender = self.state.family_member.gender;
+        let motherMap = [];
+        let fatherMap = [];
+        let selectGender = [
+            { value: true, label: 'Man' },
+            { value: false, label: 'Woman' }
+        ];
         return (
             <div>
                 <table className="create">
                     <tbody>
-                        <tr>
-                            <th>Name</th>
-                            <th>Surname</th>
-                            <th>Age</th>
-                            <th>Sex</th>
-                            <th>Mother</th>
-                            <th>Father</th>
-                        </tr>
+                    <tr>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Mother</th>
+                        <th>Father</th>
+                    </tr>
                     </tbody>
-                            <td><input type="text"
-                                       placeholder="Name"
-                                       value={name}
-                                       onChange={this.nameHandler}/></td>
-                            <td><input type="text"
-                                       placeholder="Surname"
-                                       value={this.state.surname}
-                                       onChange={this.surnameHandler}/></td>
-                            <td><input type="text"
-                                       placeholder="Age"
-                                       value={age}
-                                       onChange={this.ageHandler}/></td>
-                            <td><input type="checkbox"/></td>
-                            <td><input type="text" placeholder="Mother"/></td>
-                            <td><input type="text" placeholder="Father"/></td>
+                    <td><input type="text"
+                               placeholder="Name"
+                               value={name}
+                               onChange={this.nameHandler}/></td>
+                    <td><input type="text"
+                               placeholder="Surname"
+                               value={surname}
+                               onChange={this.surnameHandler}/></td>
+                    <td><input type="text"
+                               placeholder="Age"
+                               value={age}
+                               onChange={this.ageHandler}/></td>
+                    <td>
+                        <Select
+                            name="selected-state"
+                            placeholder={gender}
+                            options={selectGender}
+                            value={this.state.gender}
+                            onChange={this.sexHandler}
+                        />
+                    </td>
+                    <td>
+                        {self.state.family_map.map(function (m) {
+                            if (m.gender === false) {
+                                motherMap.push({
+                                    label: m.name,
+                                    value: m.name
+                                });
+                            }
+                        })}
+                        <Select
+                            name="selected-state"
+                            placeholder="Mother"
+                            options={motherMap}
+                            value={this.state.mother}
+                            onChange={this.motherHandler}
+                        />
+                    </td>
+                    <td>
+                        {self.state.family_map.map(function (f) {
+                            if (f.gender === true) {
+                                fatherMap.push({
+                                    label: f.name,
+                                    value: f.name
+                                });
+                            }
+                        })}
+                        <Select
+                            name="selected-state"
+                            placeholder="Father"
+                            options={fatherMap}
+                            value={this.state.father}
+                            onChange={this.fatherHandler}
+                        />
+                    </td>
 
                 </table>
-                <div className="create_button">
-                        <Button onClick={this.edit} waves='light' style={{backgroundColor: "green"}}>UPDATE<Icon left>input</Icon></Button>
+                <div className="custom_button">
+                    <Button onClick={this.edit} waves='light' style={{backgroundColor: "green"}}>UPDATE<Icon left>input</Icon></Button>
                 </div>
-                <div>
+                <div className="custom_button">
                     <Button waves='light' onClick={this.deleteMember} style={{backgroundColor: "red"}}>DELETE<Icon left>delete</Icon></Button>
                 </div>
             </div>
