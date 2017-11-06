@@ -121,7 +121,7 @@ let Edit = React.createClass( {
         );
         this.setState(state);
     },
-    sexHandler (newValue) {
+    genderHandler (newValue) {
         this.setState({
             gender: newValue,
         });
@@ -179,7 +179,7 @@ let Edit = React.createClass( {
                             placeholder="Gender"
                             options={selectGender}
                             value={this.state.gender}
-                            onChange={this.sexHandler}
+                            onChange={this.genderHandler}
                         />
                     </td>
                     <td>
