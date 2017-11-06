@@ -37,7 +37,7 @@ public class FamilyMember {
      * Пол
      * true - мужской, false - женский.
      */
-    private boolean sex;
+    private boolean gender;
 
     /**
      * Мать
@@ -74,11 +74,11 @@ public class FamilyMember {
     }
 
     public boolean isSex() {
-        return sex;
+        return gender;
     }
 
-    public void setSex(boolean sex) {
-        this.sex = sex;
+    public void setSex(boolean gender) {
+        this.gender = gender;
     }
 
     public String getMother() {

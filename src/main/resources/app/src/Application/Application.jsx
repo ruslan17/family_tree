@@ -37,7 +37,7 @@ let Application = React.createClass( {
                                 <th>Name</th>
                                 <th>Surname</th>
                                 <th>Age</th>
-                                <th>Sex</th>
+                                <th>Gender</th>
                                 <th>Mother</th>
                                 <th>Father</th>
                                 <th>Edit</th>
@@ -49,7 +49,7 @@ let Application = React.createClass( {
                                                 name={person.name}
                                                 surname={person.surname}
                                                 age={person.age}
-                                                sex={person.sex === true ? <p>Man</p> : <p>Woman</p>}
+                                                gender={person.gender === true ? <p>Man</p> : <p>Woman</p>}
                                                 mother={person.mother}
                                                 father={person.father}
                                     />
@@ -57,7 +57,7 @@ let Application = React.createClass( {
                             })}
                         </tbody>
                     </table>
-                    <div className="create_button">
+                    <div className="custom_button">
                         <Link to={`/create`}>
                             <Button waves='light' style={{backgroundColor: "green"}}>CREATE<Icon left>input</Icon></Button>
                         </Link>
@@ -73,7 +73,7 @@ function FamilyTree(props) {
                         <td>{props.name}</td>
                         <td>{props.surname}</td>
                         <td>{props.age}</td>
-                        <td>{props.sex}</td>
+                        <td>{props.gender}</td>
                         <td>{props.mother}</td>
                         <td>{props.father}</td>
                         <td>

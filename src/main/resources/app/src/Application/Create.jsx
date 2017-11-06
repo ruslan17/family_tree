@@ -34,9 +34,9 @@ let Create = React.createClass( {
                 name: this.state.name,
                 surname: this.state.surname,
                 age: this.state.age,
-                sex: this.state.sex,
+                gender: this.state.gender.value,
                 mother: this.state.mother.value,
-                father: this.state.father
+                father: this.state.father.value
             }),
             success: function () {
                 const state = update(this.state,
@@ -44,7 +44,7 @@ let Create = React.createClass( {
                         name: '',
                         surname: '',
                         age: '',
-                        sex: '',
+                        gender: '',
                         mother: '',
                         father: ''
                     }}
@@ -63,7 +63,7 @@ let Create = React.createClass( {
             name: '',
             surname: '',
             age: '',
-            sex: '',
+            gender: '',
             mother: '',
             father: ''
         };
@@ -89,59 +89,39 @@ let Create = React.createClass( {
         );
         this.setState(state);
     },
-    sexHandler: function(e) {
-        const state = update(this.state,
-            {$merge: {sex: e.target.value}}
-        );
-        this.setState(state);
-    },
-    motherHandler: function(e) {
-        const state = update(this.state,
-            {$merge: {mother: e.target.value}}
-        );
-        this.setState(state);
-    },
-    fatherHandler: function(e) {
-        const state = update(this.state,
-            {$merge: {father: e.target.value}}
-        );
-        this.setState(state);
-    },
-    updateValue (newValue) {
+    genderHandler (newValue) {
         this.setState({
-            sex: newValue,
+            gender: newValue,
         });
     },
-    updateValue1 (newValue) {
+    motherHandler (newValue) {
         this.setState({
             mother: newValue,
         });
     },
-    updateValue2 (newValue) {
+    fatherHandler (newValue) {
         this.setState({
-            selectValue2: newValue,
+            father: newValue,
         });
     },
     render() {
-        var motherMap = [];
-        var fatherMap = [];
-        var selectSex = [
+        let self = this;
+        let motherMap = [];
+        let fatherMap = [];
+        let selectGender = [
             { value: true, label: 'Man' },
             { value: false, label: 'Woman' }
         ];
 
-
-        var self = this;
-
         return (
             <div>
-                <table id="create">
+                <table className="create">
                     <tbody>
                         <tr>
                             <th>Name</th>
                             <th>Surname</th>
                             <th>Age</th>
-                            <th>Sex</th>
+                            <th>Gender</th>
                             <th>Mother</th>
                             <th>Father</th>
                         </tr>
@@ -158,61 +138,63 @@ let Create = React.createClass( {
                                        placeholder="Age"
                                        value={this.state.age}
                                        onChange={this.ageHandler}/></td>
-                            {/*<td>*/}
-                                {/*<Select*/}
-                                    {/*name="selected-state"*/}
-                                    {/*options={selectSex}*/}
-                                    {/*value={this.state.sex}*/}
-                                    {/*onChange={this.updateValue}*/}
-                                {/*/>*/}
-                            {/*</td>*/}
+                            <td>
+                                <Select
+                                    name="selected-state"
+                                    placeholder="Gender"
+                                    options={selectGender}
+                                    value={this.state.gender}
+                                    onChange={this.genderHandler}
+                                />
+                            </td>
                             <td>
                                 {self.state.family_member.map(function (m) {
-                                    motherMap.push({
-                                        label: m.mother,
-                                        value: m.mother
-                                    });
+                                    if (m.gender === false) {
+                                        motherMap.push({
+                                            label: m.name,
+                                            value: m.name
+                                        });
+                                    }
                                 })}
                                 <Select
                                     name="selected-state"
+                                    placeholder="Mother"
                                     options={motherMap}
                                     value={this.state.mother}
-                                    onChange={this.updateValue1}
+                                    onChange={this.motherHandler}
                                 />
                             </td>
                             <td>
                                 {self.state.family_member.map(function (f) {
-
-                                    fatherMap.push({
-                                        label: f.father,
-                                        value: f.father
-                                    });
+                                    if (f.gender === true) {
+                                        fatherMap.push({
+                                            label: f.name,
+                                            value: f.name
+                                        });
+                                    }
                                 })}
                                 <Select
                                     name="selected-state"
+                                    placeholder="Father"
                                     options={fatherMap}
-                                    value={this.state.selectValue2}
-                                    onChange={this.updateValue2}
+                                    value={this.state.father}
+                                    onChange={this.fatherHandler}
                                 />
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <div className="create_button">
+                <div className="custom_button">
                         <Button onClick={this.send} waves='light' style={{backgroundColor: "green"}}>CREATE<Icon left>input</Icon></Button>
                 </div>
-                <div className="button_back">
+                <div className="custom_button">
                     <Link to={`/`}>
-                        <Button waves='light' style={{backgroundColor: "green"}}>CREATE<Icon left>input</Icon></Button>
+                        <Button waves='light' style={{backgroundColor: "blue"}}>BACK<Icon left>arrow_back</Icon></Button>
                     </Link>
                 </div>
             </div>
         );
     }
 });
-
-function logChange(val) {
-    console.log('Selected: ', val);
-}
 
 export default Create;
