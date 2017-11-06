@@ -53,7 +53,7 @@ let Edit = React.createClass( {
     deleteMember: function () {
         if (this.props) {
             $.ajax({
-                url: config.get('BASE_URL') + `delete/${this.props.params.id}`,
+                url: config.get('BASE_URL') + `${this.props.params.id}`,
                 type: "DELETE",
                 success: function (data) {
                     this.setState({ data: 0 });

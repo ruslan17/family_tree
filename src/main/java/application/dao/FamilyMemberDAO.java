@@ -1,10 +1,7 @@
 package application.dao;
 
 import application.model.FamilyMember;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.List;
@@ -15,6 +12,16 @@ import java.util.List;
 @RepositoryRestResource(collectionResourceRel = "family_member", path = "family_member")
 public interface FamilyMemberDAO extends JpaRepository<FamilyMember, Integer> {
 
+    @Override
+    List<FamilyMember> findAll();
+
+    @Override
+    List<FamilyMember> findAll(Iterable<Integer> id);
+
+    @Override
+    <S extends FamilyMember> S save(S entity);
+
+    void delete(Integer id);
 
 //    @Query("SELECT human.id as id, human.name as name, human.surname as surname, human.age as age, human.sex as sex, parent.name as mother, parent.name as father FROM\n" +
 //            "  family_member human\n" +

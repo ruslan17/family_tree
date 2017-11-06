@@ -12,7 +12,7 @@ let Application = React.createClass( {
             url: config.get('BASE_URL') + `?size=10000`,
             dataType: 'json',
             success: function(member) {
-                this.setState({family_member: member});
+                this.setState({family_member: member._embedded.family_member});
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(status, err.toString());
@@ -42,9 +42,9 @@ let Application = React.createClass( {
                                 <th>Father</th>
                                 <th>Edit</th>
                             </tr>
-                            {self.state.family_member.map(function (person) {
+                            {self.state.family_member.map(function (person, index) {
                                 return (
-                                    <FamilyTree key={person.id}
+                                    <FamilyTree key={index}
                                                 id={person.id}
                                                 name={person.name}
                                                 surname={person.surname}

@@ -17,7 +17,7 @@ let Create = React.createClass( {
             url: config.get('BASE_URL') + `?size=10000`,
             dataType: 'json',
             success: function(member) {
-                this.setState({family_member: member});
+                this.setState({family_member: member._embedded.family_member});
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(status, err.toString());
@@ -31,6 +31,7 @@ let Create = React.createClass( {
             dataType: 'json',
             contentType: 'application/json',
             data: JSON.stringify({
+                id: this.state.id,
                 name: this.state.name,
                 surname: this.state.surname,
                 age: this.state.age,
@@ -132,10 +133,7 @@ let Create = React.createClass( {
                                        placeholder="Age"
                                        value={this.state.age}
                                        onChange={this.ageHandler}/></td>
-                            <td><input type="text"
-                                       placeholder="Sex"
-                                       value={this.state.sex}
-                                       onChange={this.sexHandler}/></td>
+
                             <td>
                                 {self.state.family_member.map(function (content) {
                                     content.label = content.mother;
