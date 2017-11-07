@@ -21,7 +21,10 @@ let Edit = React.createClass( {
                     id: this.state.id,
                     name: this.state.name,
                     surname: this.state.surname,
-                    age: this.state.age
+                    age: this.state.age,
+                    gender: this.state.gender.value,
+                    mother: this.state.mother.value,
+                    father: this.state.father.value
                 }),
                 success: function () {
                     const state = update(this.state,
@@ -35,9 +38,11 @@ let Edit = React.createClass( {
                         }}
                     );
                     this.setState(state);
+                    this.props.history.push('/');
                 }.bind(this),
                 error: function () {
                     console.error("Error");
+                    alert("Wrong input fields");
                 }
             });
         }
@@ -48,6 +53,24 @@ let Edit = React.createClass( {
             dataType: 'json',
             success: function(member) {
                 this.setState({family_member: member});
+                this.setState({name: member.name});
+                this.setState({surname: member.surname});
+                this.setState({age: member.age});
+                this.setState({
+                    mother: {
+                      label:   member.mother,
+                      value:   member.mother
+                    },
+                    father: {
+                        label:   member.father,
+                        value:   member.father
+                    },
+                    gender: {
+                        label:   member.gender,
+                        value:   member.gender
+                    }
+
+                });
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(status, err.toString());
@@ -83,14 +106,11 @@ let Edit = React.createClass( {
             });
         }
     },
-    getInitialState: function() {
-        return {
-            family_member: []
-        };
-    },
+
     componentDidMount: function() {
         this.loadFromServer(this.props);
         this.loadAllFromServer();
+        this.nameHandler(this.props)
     },
     getInitialState: function() {
         return {
@@ -105,25 +125,20 @@ let Edit = React.createClass( {
             id: this.props.params.id
         };
     },
-    nameHandler: function(e) {
-        // const state = update(this.state,
-        //     {$merge: {name: e.target.value}}
-        // );
-        this.setState({name: e.target.value});
+    nameHandler: function(event) {
+        if (event.target) {
+            this.setState({name: event.target.value});
+        }
     },
-    surnameHandler: function(e) {
-        const state = update(this.state,
-            {$merge: {surname: e.target.value}}
-        );
-        this.setState(state);
+    surnameHandler: function(event) {
+
+        this.setState({surname: event.target.value});
     },
-    ageHandler: function(e) {
-        const state = update(this.state,
-            {$merge: {age: e.target.value}}
-        );
-        this.setState(state);
+    ageHandler: function(event) {
+
+        this.setState({age: event.target.value});
     },
-    sexHandler (newValue) {
+    genderHandler (newValue) {
         this.setState({
             gender: newValue,
         });
@@ -140,10 +155,6 @@ let Edit = React.createClass( {
     },
     render() {
         var self = this;
-        var name = self.state.family_member.name;
-        var surname = self.state.family_member.surname;
-        var age = self.state.family_member.age;
-        var gender = self.state.family_member.gender;
         let motherMap = [];
         let fatherMap = [];
         let selectGender = [
@@ -165,28 +176,28 @@ let Edit = React.createClass( {
                     </tbody>
                             <td><input type="text"
                                        placeholder="Name"
-                                       value={name}
+                                       value={this.state.name}
                                        onChange={this.nameHandler}/></td>
                             <td><input type="text"
                                        placeholder="Surname"
-                                       value={surname}
+                                       value={this.state.surname}
                                        onChange={this.surnameHandler}/></td>
                             <td><input type="text"
                                        placeholder="Age"
-                                       value={age}
+                                       value={this.state.age}
                                        onChange={this.ageHandler}/></td>
                     <td>
                         <Select
                             name="selected-state"
-                            placeholder={gender}
+                            placeholder="Gender"
                             options={selectGender}
-                            value={this.state.gender}
-                            onChange={this.sexHandler}
+                            value={this.state.gender.value}
+                            onChange={this.genderHandler}
                         />
                     </td>
                     <td>
                         {self.state.family_map.map(function (m) {
-                            if (m.gender === false) {
+                            if (m.gender === false && m.id != self.state.id && m.age > self.state.age) {
                                 motherMap.push({
                                     label: m.name,
                                     value: m.name
@@ -203,7 +214,7 @@ let Edit = React.createClass( {
                     </td>
                     <td>
                         {self.state.family_map.map(function (f) {
-                            if (f.gender === true) {
+                            if (f.gender === true && f.id != self.state.id && f.age > self.state.age) {
                                 fatherMap.push({
                                     label: f.name,
                                     value: f.name
