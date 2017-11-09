@@ -6,7 +6,7 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 
 /**
- * Конфигурация для добавления ID сущности
+ * Конфигурация для добавления ID сущности, прописанной в методе
  */
 @Configuration
 public class DAOConfig extends RepositoryRestConfigurerAdapter {

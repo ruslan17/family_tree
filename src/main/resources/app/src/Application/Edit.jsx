@@ -82,7 +82,7 @@ let Edit = React.createClass( {
             url: config.get('BASE_URL') + `?size=10000`,
             dataType: 'json',
             success: function(member) {
-                this.setState({family_member: member._embedded.family_member});
+                this.setState({family_map: member._embedded.family_member});
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(status, err.toString());
