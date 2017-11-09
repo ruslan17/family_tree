@@ -95,7 +95,6 @@ let Edit = React.createClass( {
                 url: config.get('BASE_URL') + `${this.props.params.id}`,
                 type: "DELETE",
                 success: function () {
-                    this.setState({ data: 0 });
                     this.props.history.push('/');
 
                 }.bind(this),
