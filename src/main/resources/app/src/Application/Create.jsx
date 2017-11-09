@@ -12,6 +12,7 @@ import 'react-select/dist/react-select.css';
 
 // Компонент для создания члена семьи
 let Create = React.createClass( {
+    // Запрос к серверу для получения списка всех членов семьи
     loadFromServer: function () {
         $.ajax({
             url: config.get('BASE_URL') + `?size=10000`,
@@ -24,6 +25,7 @@ let Create = React.createClass( {
             }
         });
     },
+    // Запрос к серверу для сохранения нового члена семьи
     send: function() {
         $.ajax({
             url: config.get('BASE_URL'),

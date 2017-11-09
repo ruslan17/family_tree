@@ -7,6 +7,7 @@ import {Link} from 'react-router';
 
 // Компонент для отображения всех членов семьи
 let Application = React.createClass( {
+    // Запрос к серверу для получения списка всех членов семьи
     loadFromServer: function () {
         $.ajax({
             url: config.get('BASE_URL') + `?size=10000`,
@@ -42,6 +43,9 @@ let Application = React.createClass( {
                                 <th>Father</th>
                                 <th>Edit</th>
                             </tr>
+                            {/*Мэпка которая пробегается по массиву членов семьи, пришедшему с сервера
+                                и для каждого объекта массива создает свою строку в таблице используя
+                                передающуюся в рендер функцию FamilyTree*/}
                             {self.state.family_member.map(function (person) {
                                 return (
                                     <FamilyTree key={person.id}

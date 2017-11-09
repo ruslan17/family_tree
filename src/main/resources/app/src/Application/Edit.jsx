@@ -9,7 +9,7 @@ import Select from 'react-select';
 
 // Компонент для редактирования и удаления члена семьи
 let Edit = React.createClass( {
-
+    // Запрос к серверу для изменения члена семьи
     edit: function() {
         if (this.props){
             $.ajax({
@@ -47,6 +47,7 @@ let Edit = React.createClass( {
             });
         }
     },
+    // Запрос к серверу для получения нужного члена семьи
     loadFromServer: function (props) {
         $.ajax({
             url: config.get('BASE_URL') + `${props.params.id}`,
@@ -77,6 +78,7 @@ let Edit = React.createClass( {
             }
         });
     },
+    // Запрос к серверу для получения списка всех членов семьи(нужно для отображения родителей при выборе)
     loadAllFromServer: function () {
         $.ajax({
             url: config.get('BASE_URL') + `?size=10000`,
@@ -89,13 +91,13 @@ let Edit = React.createClass( {
             }
         });
     },
+    // Запрос к серверу для удаления члена семьи
     deleteMember: function () {
         if (this.props) {
             $.ajax({
                 url: config.get('BASE_URL') + `delete/${this.props.params.id}`,
                 type: "DELETE",
                 success: function () {
-                    this.setState({ data: 0 });
                     this.props.history.push('/');
 
                 }.bind(this),
