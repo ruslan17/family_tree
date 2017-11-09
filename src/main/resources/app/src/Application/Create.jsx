@@ -148,7 +148,7 @@ let Create = React.createClass( {
                         </td>
                         <td>
                             {self.state.family_member.map(function (m) {
-                                if (m.gender === false) {
+                                if (m.gender === false && m.age > self.state.age) {
                                     motherMap.push({
                                         label: m.name,
                                         value: m.name
@@ -165,7 +165,7 @@ let Create = React.createClass( {
                         </td>
                         <td>
                             {self.state.family_member.map(function (f) {
-                                if (f.gender === true) {
+                                if (f.gender === true && f.age > self.state.age) {
                                     fatherMap.push({
                                         label: f.name,
                                         value: f.name
